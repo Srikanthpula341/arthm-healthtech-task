@@ -42,11 +42,11 @@
         <div class="col-md-4 mb-3">
           <label class="form-label text-secondary fw-semibold">Temperature</label>
           <div class="input-group">
-            <input type="number" formControlName="temperature" class="form-control bg-light" placeholder="37.0" step="0.1">
-            <span class="input-group-text bg-light text-muted">°C</span>
+            <input type="number" formControlName="temperature" class="form-control bg-light" placeholder="98.6" step="0.1">
+            <span class="input-group-text bg-light text-muted">°F</span>
           </div>
           <div *ngIf="consultationForm.get('temperature')?.touched && consultationForm.get('temperature')?.invalid" class="text-danger small mt-1 fw-semibold">
-            Range: 35.0 - 42.0
+            Range: 95.0 - 108.0
           </div>
         </div>
       </div>

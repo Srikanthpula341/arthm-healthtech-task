@@ -20,7 +20,7 @@ export class ConsultationForm implements OnInit {
     appointmentId: ['', Validators.required],
     systolicBp: [null as number | null, [Validators.required, Validators.min(60), Validators.max(200)]],
     diastolicBp: [null as number | null, [Validators.required, Validators.min(40), Validators.max(130)]],
-    temperature: [null as number | null, [Validators.required, Validators.min(35.0), Validators.max(42.0)]],
+    temperature: [null as number | null, [Validators.required, Validators.min(95.0), Validators.max(108.0)]],
     notes: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
     isComplete: [false, Validators.requiredTrue]
   });
@@ -50,8 +50,7 @@ export class ConsultationForm implements OnInit {
       };
 
       this.consultationService.create(dto).subscribe({
-        next: () => this.router.navigate(['/consultations']),
-        error: (err) => alert('Failed to save consultation: ' + err.message)
+        next: () => this.router.navigate(['/consultations'])
       });
     } else {
       this.consultationForm.markAllAsTouched();
