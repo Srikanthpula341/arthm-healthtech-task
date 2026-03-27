@@ -1,0 +1,81 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="fw-bold text-dark mb-0">Record Consultation</h2>
+  <button class="btn btn-outline-secondary fw-bold shadow-sm rounded-pill px-4" routerLink="/appointments">
+    <i class="bi bi-arrow-left"></i> Back to Appointments
+  </button>
+</div>
+
+<div class="card shadow-sm border-0" style="border-radius: 12px; max-width: 800px; margin: 0 auto;">
+  <div class="card-body p-5">
+    <form [formGroup]="consultationForm" (ngSubmit)="onSubmit()">
+      
+      <div class="mb-4">
+        <label class="form-label text-secondary fw-semibold">Appointment ID</label>
+        <input type="text" formControlName="appointmentId" class="form-control bg-light" readonly>
+      </div>
+
+      <h5 class="fw-bold text-primary mb-3 border-bottom pb-2">Vitals</h5>
+      
+      <div class="row mb-2">
+        <div class="col-md-4 mb-3">
+          <label class="form-label text-secondary fw-semibold">Systolic BP</label>
+          <div class="input-group">
+            <input type="number" formControlName="systolicBp" class="form-control bg-light" placeholder="120">
+            <span class="input-group-text bg-light text-muted">mmHg</span>
+          </div>
+          <div *ngIf="consultationForm.get('systolicBp')?.touched && consultationForm.get('systolicBp')?.invalid" class="text-danger small mt-1 fw-semibold">
+            Range: 60 - 200
+          </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+          <label class="form-label text-secondary fw-semibold">Diastolic BP</label>
+          <div class="input-group">
+            <input type="number" formControlName="diastolicBp" class="form-control bg-light" placeholder="80">
+            <span class="input-group-text bg-light text-muted">mmHg</span>
+          </div>
+          <div *ngIf="consultationForm.get('diastolicBp')?.touched && consultationForm.get('diastolicBp')?.invalid" class="text-danger small mt-1 fw-semibold">
+            Range: 40 - 130
+          </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+          <label class="form-label text-secondary fw-semibold">Temperature</label>
+          <div class="input-group">
+            <input type="number" formControlName="temperature" class="form-control bg-light" placeholder="37.0" step="0.1">
+            <span class="input-group-text bg-light text-muted">°C</span>
+          </div>
+          <div *ngIf="consultationForm.get('temperature')?.touched && consultationForm.get('temperature')?.invalid" class="text-danger small mt-1 fw-semibold">
+            Range: 35.0 - 42.0
+          </div>
+        </div>
+      </div>
+
+      <h5 class="fw-bold text-primary mb-3 mt-4 border-bottom pb-2">Doctor's Notes</h5>
+      
+      <div class="mb-4">
+        <textarea formControlName="notes" class="form-control bg-light" rows="4" placeholder="Enter consultation notes..."></textarea>
+        <div class="d-flex justify-content-between mt-1">
+          <div *ngIf="consultationForm.get('notes')?.touched && consultationForm.get('notes')?.invalid" class="text-danger small fw-semibold">
+            Notes must be between 10 and 500 characters.
+          </div>
+          <div class="small text-muted ms-auto">{{ notesLength }} / 500</div>
+        </div>
+      </div>
+
+      <div class="form-check mb-4 p-3 bg-light rounded border border-warning">
+        <input class="form-check-input ms-2" type="checkbox" formControlName="isComplete" id="markCompleteCheckbox" style="transform: scale(1.5);">
+        <label class="form-check-label fw-bold text-dark ms-3" for="markCompleteCheckbox">
+          Mark Consultation as Complete
+        </label>
+        <div *ngIf="consultationForm.get('isComplete')?.touched && consultationForm.get('isComplete')?.invalid" class="text-danger small fw-semibold ms-3 mt-1">
+          You must mark the consultation as complete to save.
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-success w-100 py-3 shadow-sm rounded-pill fw-bold fs-5">
+        <i class="bi bi-check-circle me-2"></i> Save Consultation
+      </button>
+    </form>
+  </div>
+</div>

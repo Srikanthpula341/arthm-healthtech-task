@@ -1,0 +1,49 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="fw-bold text-dark mb-0">Consultations History</h2>
+</div>
+
+<div class="row">
+  <div class="col-12" *ngIf="consultations.length === 0">
+    <div class="card shadow-sm border-0 text-center py-5" style="border-radius: 12px;">
+      <i class="bi bi-journal-medical display-4 text-secondary opacity-50 d-block mb-3"></i>
+      <h5 class="text-muted">No completed consultations found.</h5>
+    </div>
+  </div>
+
+  <div class="col-md-6 mb-4" *ngFor="let c of consultations">
+    <div class="card shadow-sm border-0 h-100" style="border-radius: 12px; border-left: 5px solid #198754 !important;">
+      <div class="card-body p-4">
+        <div class="d-flex justify-content-between mb-3">
+          <h5 class="fw-bold text-dark mb-0">Appt #{{ c.appointmentId }}</h5>
+          <span class="badge bg-success rounded-pill px-3">Completed</span>
+        </div>
+        
+        <div class="row g-3 mb-3">
+          <div class="col-6">
+            <div class="d-flex align-items-center">
+              <div class="bg-light p-2 rounded text-danger me-2"><i class="bi bi-heart-pulse"></i></div>
+              <div>
+                <small class="text-muted d-block" style="line-height: 1;">Blood Pressure</small>
+                <span class="fw-bold">{{ c.systolicBP }}/{{ c.diastolicBP }} mmHg</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="d-flex align-items-center">
+              <div class="bg-light p-2 rounded text-warning me-2"><i class="bi bi-thermometer-half"></i></div>
+              <div>
+                <small class="text-muted d-block" style="line-height: 1;">Temperature</small>
+                <span class="fw-bold">{{ c.temperature }} °C</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-light p-3 rounded">
+          <h6 class="text-muted fw-bold mb-1 fs-6"><i class="bi bi-card-text"></i> Doctor's Notes</h6>
+          <p class="mb-0 text-dark">{{ c.notes }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+{
+  "authentication": {
+    "login": {
+      "url": "/api/v1/auth/login",
+      "method": "POST",
+      "payload": {
+        "username": "admin_user",
+        "password": "secure_password"
+      }
+    }
+  },
+  "staff_management": {
+    "create_doctor": {
+      "url": "/api/v1/users",
+      "method": "POST",
+      "headers": { "X-User-Role": "ADMIN" },
+      "payload": {
+        "username": "dr_smith",
+        "password": "doctor_password",
+        "fullName": "Dr. John Smith",
+        "role": "DOCTOR"
+      }
+    },
+    "create_receptionist": {
+      "url": "/api/v1/users",
+      "method": "POST",
+      "headers": { "X-User-Role": "ADMIN" },
+      "payload": {
+        "username": "recept_ann",
+        "password": "recept_password",
+        "fullName": "Ann Wilson",
+        "role": "RECEPT"
+      }
+    }
+  },
+  "patient_management": {
+    "create_patient": {
+      "url": "/api/v1/patients",
+      "method": "POST",
+      "headers": { "X-User-Role": "RECEPT" },
+      "payload": {
+        "name": "Jane Doe",
+        "age": 28,
+        "gender": "FEMALE",
+        "phone": "9876543210",
+        "address": "456 Wellness Way"
+      }
+    }
+  },
+  "appointments": {
+    "book_appointment": {
+      "url": "/api/v1/appointments",
+      "method": "POST",
+      "headers": { "X-User-Role": "RECEPT" },
+      "payload": {
+        "patientId": "P-GUID_HERE",
+        "doctorId": "U-GUID_HERE",
+        "appointmentDate": "2026-04-05",
+        "appointmentTime": "14:30",
+        "notes": "Post-op follow up"
+      }
+    },
+    "search": {
+      "url": "/api/v1/appointments/search",
+      "method": "GET",
+      "query_params": { "from": "2026-04-01", "to": "2026-04-30" }
+    }
+  },
+  "consultations": {
+    "complete_consultation": {
+      "url": "/api/v1/consultations",
+      "method": "POST",
+      "headers": { "X-User-Role": "DOCTOR" },
+      "payload": {
+        "appointmentId": "A-GUID_HERE",
+        "systolicBP": 118,
+        "diastolicBP": 75,
+        "temperature": 98.4,
+        "notes": "Vitals stable. Continuing current prescription."
+      }
+    },
+    "search": {
+      "url": "/api/v1/consultations/search",
+      "method": "GET",
+      "query_params": { "patientId": "P-123", "doctorId": "U-456", "from": "2026-01-01T00:00:00" }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="fw-bold text-dark mb-0">Appointments</h2>
+  <button class="btn btn-primary fw-bold shadow-sm rounded-pill px-4" routerLink="/appointments/new">
+    <i class="bi bi-calendar-plus"></i> Book Appointment
+  </button>
+</div>
+
+<div class="card shadow-sm border-0" style="border-radius: 12px;">
+  <div class="card-body p-4">
+    <div class="btn-group mb-4 shadow-sm" role="group">
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio1" [checked]="viewMode() === 'ALL'" (click)="loadAppointments()">
+      <label class="btn btn-outline-primary fw-semibold px-4" for="btnradio1">All</label>
+
+      <input type="radio" class="btn-check" name="btnradio" id="btnradio2" [checked]="viewMode() === 'TODAY'" (click)="loadToday()">
+      <label class="btn btn-outline-primary fw-semibold px-4" for="btnradio2">Today</label>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table align-middle table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>ID</th>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Date & Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let a of appointments()">
+            <td class="text-muted">#{{ a.appointmentId || a.id }}</td>
+            <td class="fw-bold text-dark">{{ a.patient?.name || 'Patient #' + a.patientId }}</td>
+            <td>Dr. {{ a.doctorName }}</td>
+            <td>
+              <div class="fw-semibold"><i class="bi bi-calendar2 me-1"></i>{{ a.appointmentDate }}</div>
+              <div class="small text-muted"><i class="bi bi-clock me-1"></i>{{ a.appointmentTime }}</div>
+            </td>
+            <td>
+              <span class="badge rounded-pill px-3" 
+                [ngClass]="{
+                  'bg-warning text-dark': a.status === 'PENDING',
+                  'bg-success': a.status === 'COMPLETED',
+                  'bg-danger': a.status === 'CANCELLED'
+                }">
+                {{ a.status }}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-outline-success rounded-pill px-3 fw-semibold" routerLink="/consultations/new" [queryParams]="{appointmentId: a.appointmentId || a.id}" *ngIf="a.status === 'PENDING'">
+                Consult
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="appointments().length === 0">
+            <td colspan="6" class="text-center text-muted py-5">
+              <i class="bi bi-calendarX display-4 text-secondary opacity-50 d-block mb-3"></i>
+              No appointments found for this view.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<div class="login-container">
+  <!-- Left Side: Form -->
+  <div class="login-left">
+    <div class="login-form-wrapper">
+      <h2 class="login-title text-center">LOGIN</h2>
+      <p class="login-subtitle text-center">Sign in to access OPD Portal</p>
+      
+      <div *ngIf="errorMessage" class="alert alert-danger rounded-pill py-2 text-center shadow-sm" style="font-size: 0.9rem;" role="alert">
+        {{ errorMessage }}
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="custom-input-group">
+          <i class="bi bi-person"></i>
+          <input type="text" formControlName="username" placeholder="Username" autocomplete="username">
+        </div>
+
+        <div class="custom-input-group">
+          <i class="bi bi-lock"></i>
+          <input type="password" formControlName="password" placeholder="Password" autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="btn-login" [disabled]="loginForm.invalid || isLoading">
+          <span *ngIf="!isLoading">Login Now</span>
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        </button>
+      </form>
+
+
+    </div>
+  </div>
+
+  <!-- Right Side: Graphic -->
+  <div class="login-right">
+    <div class="right-bg-pattern"></div>
+    <div class="hero-image-container">
+      <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=800" alt="Hospital Blue" class="hero-img">
+    </div>
+    <div class="floating-icon">
+      <i class="bi bi-lightning-charge-fill"></i>
+    </div>
+  </div>
+</div>

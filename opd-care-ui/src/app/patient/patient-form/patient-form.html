@@ -1,0 +1,60 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2 class="fw-bold text-dark mb-0">Register Patient</h2>
+  <button class="btn btn-outline-secondary fw-bold shadow-sm rounded-pill px-4" routerLink="/patients">
+    <i class="bi bi-arrow-left"></i> Back
+  </button>
+</div>
+
+<div class="card shadow-sm border-0" style="border-radius: 12px; max-width: 600px; margin: 0 auto;">
+  <div class="card-body p-5">
+    <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+      
+      <div class="mb-3">
+        <label class="form-label text-secondary fw-semibold">Full Name</label>
+        <div class="input-group">
+          <span class="input-group-text bg-light border-end-0"><i class="bi bi-person"></i></span>
+          <input type="text" formControlName="name" class="form-control bg-light border-start-0" placeholder="e.g. John Doe">
+        </div>
+        <div *ngIf="patientForm.get('name')?.touched && patientForm.get('name')?.invalid" class="text-danger small mt-1 fw-semibold">
+          <i class="bi bi-exclamation-circle"></i> Valid name is required (3-50 alphanumeric characters).
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label text-secondary fw-semibold">Gender</label>
+          <select formControlName="gender" class="form-select bg-light">
+            <option value="" disabled selected>Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+          <div *ngIf="patientForm.get('gender')?.touched && patientForm.get('gender')?.invalid" class="text-danger small mt-1 fw-semibold">
+            <i class="bi bi-exclamation-circle"></i> Gender is required.
+          </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <label class="form-label text-secondary fw-semibold">Age</label>
+          <input type="number" formControlName="age" class="form-control bg-light" placeholder="Years">
+          <div *ngIf="patientForm.get('age')?.touched && patientForm.get('age')?.invalid" class="text-danger small mt-1 fw-semibold">
+            <i class="bi bi-exclamation-circle"></i> Age must be between 1 and 120.
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label text-secondary fw-semibold">Phone Number</label>
+        <div class="input-group">
+          <span class="input-group-text bg-light border-end-0"><i class="bi bi-telephone"></i></span>
+          <input type="text" formControlName="phone" class="form-control bg-light border-start-0" placeholder="10-digit number">
+        </div>
+        <div *ngIf="patientForm.get('phone')?.touched && patientForm.get('phone')?.invalid" class="text-danger small mt-1 fw-semibold">
+          <i class="bi bi-exclamation-circle"></i> Valid 10-digit phone number is required.
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 py-2 shadow-sm rounded-pill fw-bold">Register Patient</button>
+    </form>
+  </div>
+</div>
