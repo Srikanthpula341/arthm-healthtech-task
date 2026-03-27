@@ -24,21 +24,10 @@
         <label class="form-label text-secondary fw-semibold">Patient</label>
         <select formControlName="patientId" class="form-select bg-light">
           <option value="" disabled selected>Select an existing patient...</option>
-          <option *ngFor="let p of patients" [value]="p.id">{{ p.name }} (#{{ p.id }}) - {{ p.phone }}</option>
+          <option *ngFor="let p of patients" [value]="p.patientId || p.id">{{ p.name }} (#{{ p.patientId || p.id }}) - {{ p.phone }}</option>
         </select>
         <div *ngIf="appointmentForm.get('patientId')?.touched && appointmentForm.get('patientId')?.invalid" class="text-danger small mt-1 fw-semibold">
           <i class="bi bi-exclamation-circle"></i> Patient is required.
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label text-secondary fw-semibold">Doctor Name</label>
-        <div class="input-group">
-          <span class="input-group-text bg-light border-end-0"><i class="bi bi-person-badge"></i></span>
-          <input type="text" formControlName="doctorName" class="form-control bg-light border-start-0" placeholder="e.g. Smith">
-        </div>
-        <div *ngIf="appointmentForm.get('doctorName')?.touched && appointmentForm.get('doctorName')?.invalid" class="text-danger small mt-1 fw-semibold">
-          <i class="bi bi-exclamation-circle"></i> Doctor name is required.
         </div>
       </div>
 
@@ -53,8 +42,19 @@
         
         <div class="col-md-6 mb-4">
           <label class="form-label text-secondary fw-semibold">Time</label>
-          <input type="time" formControlName="appointmentTime" class="form-control bg-light" step="1800">
-          <div class="form-text mt-1">09:00 AM - 05:00 PM (30m slots)</div>
+          <select formControlName="appointmentTime" class="form-select bg-light">
+            <option value="" disabled selected>Select an hour...</option>
+            <option value="09:00">09:00 AM</option>
+            <option value="10:00">10:00 AM</option>
+            <option value="11:00">11:00 AM</option>
+            <option value="12:00">12:00 PM</option>
+            <option value="13:00">01:00 PM</option>
+            <option value="14:00">02:00 PM</option>
+            <option value="15:00">03:00 PM</option>
+            <option value="16:00">04:00 PM</option>
+            <option value="17:00">05:00 PM</option>
+          </select>
+          <div class="form-text mt-1">09:00 AM - 05:00 PM (1-hour slots)</div>
           <div *ngIf="appointmentForm.get('appointmentTime')?.touched && appointmentForm.get('appointmentTime')?.invalid" class="text-danger small mt-1 fw-semibold">
             <i class="bi bi-exclamation-circle"></i> Time is required.
           </div>

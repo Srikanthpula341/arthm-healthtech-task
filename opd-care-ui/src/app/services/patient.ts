@@ -29,6 +29,6 @@ export class Patient {
   }
 
   search(query: string) {
-    return this.api.get<PatientDto[]>(`/patients/search?q=${query}`);
+    return this.api.get<PatientDto[]>(`/patients/search?query=${query}`);
   }
 }

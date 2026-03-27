@@ -1,0 +1,17 @@
+<div class="toast-container position-fixed top-0 end-0 p-4">
+  <div *ngFor="let toast of toastService.toasts()" 
+       class="toast show align-items-center border-0 mb-3 p-2" 
+       [ngClass]="toast.type === 'SUCCESS' ? 'bg-success-subtle' : 'bg-danger-subtle'" 
+       role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex align-items-center">
+      <div class="p-2">
+        <i class="bi" [ngClass]="toast.type === 'SUCCESS' ? 'bi-check-circle-fill icon-success' : 'bi-x-circle-fill icon-danger'"></i>
+      </div>
+      <div class="toast-body flex-grow-1">
+        <strong class="d-block fs-6 mb-1">{{ toast.title }}</strong>
+        <div class="small opacity-75">{{ toast.message }}</div>
+      </div>
+      <button type="button" class="btn-close me-2 m-auto" (click)="toastService.remove(toast.id)"></button>
+    </div>
+  </div>
+</div>

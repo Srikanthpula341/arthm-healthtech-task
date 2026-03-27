@@ -55,7 +55,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public List<PatientDTO> searchPatients(String query) {
-        return patientRepository.findByNameContainingIgnoreCase(query).stream()
+        return patientRepository.findByNameContainingIgnoreCaseOrPhoneContaining(query, query).stream()
                 .map(MappingUtil::toPatientDTO)
                 .collect(Collectors.toList());
     }

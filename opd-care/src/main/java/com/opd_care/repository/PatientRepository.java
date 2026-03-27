@@ -10,5 +10,6 @@ import java.util.List;
 public interface PatientRepository extends JpaRepository<Patient, String> {
     boolean existsByPhone(String phone);
     List<Patient> findByNameContainingIgnoreCase(String name);
+    List<Patient> findByNameContainingIgnoreCaseOrPhoneContaining(String name, String phone);
     List<Patient> findByPhone(String phone);
 }

@@ -5,6 +5,7 @@ import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { Appointment } from '../../services/appointment';
 import { Patient, PatientDto } from '../../services/patient';
 import { Api } from '../../services/api';
+import { ToastService } from '../../services/toast';
 
 @Component({
   selector: 'app-appointment-form',
@@ -30,6 +31,8 @@ export class AppointmentForm implements OnInit {
     appointmentTime: ['', Validators.required]
   });
 
+  private toastService = inject(ToastService);
+
   ngOnInit() {
     this.patientService.getAll().subscribe({
       next: (data) => this.patients = data || [],
@@ -42,26 +45,27 @@ export class AppointmentForm implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params['patientId']) {
         this.appointmentForm.patchValue({ patientId: params['patientId'] });
+        this.appointmentForm.get('patientId')?.disable();
       }
     });
   }
 
   onSubmit() {
     if (this.appointmentForm.valid) {
-      const formValue = this.appointmentForm.value;
+      const formValue = this.appointmentForm.getRawValue() as any;
       
       const selectedDate = new Date(formValue.appointmentDate!);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       if (selectedDate < today) {
-        alert("Date must be in the future");
+        this.toastService.showError("Validation Error", "Date must be in the future");
         return;
       }
 
       const time = formValue.appointmentTime!;
       const [hours, mins] = time.split(':').map(Number);
-      if (hours < 9 || hours >= 17 || (mins !== 0 && mins !== 30)) {
-        alert("Time must be between 09:00 and 17:00 in 30-min intervals.");
+      if (hours < 9 || hours > 17 || mins !== 0) {
+        this.toastService.showError("Validation Error", "Time must be between 09:00 and 17:00 in strict 1-hour intervals.");
         return;
       }
 
@@ -74,8 +78,7 @@ export class AppointmentForm implements OnInit {
       };
 
       this.appointmentService.book(dto).subscribe({
-        next: () => this.router.navigate(['/appointments']),
-        error: (err) => alert('Failed to book appointment: ' + err.message)
+        next: () => this.router.navigate(['/appointments'])
       });
     } else {
       this.appointmentForm.markAllAsTouched();

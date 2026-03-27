@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { Patient, PatientDto } from '../../services/patient';
 import { FormsModule } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';
+import { Auth } from '../../services/auth';
 @Component({
   selector: 'app-patient-list',
   imports: [CommonModule, RouterLink, FormsModule],
@@ -11,6 +12,7 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrl: './patient-list.css',
 })
 export class PatientList implements OnInit {
+  public auth = inject(Auth);
   private patientService = inject(Patient);
    private cdr = inject(ChangeDetectorRef);
   

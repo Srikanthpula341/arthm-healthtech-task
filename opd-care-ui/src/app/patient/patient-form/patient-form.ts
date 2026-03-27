@@ -25,8 +25,7 @@ export class PatientForm {
   onSubmit() {
     if (this.patientForm.valid) {
       this.patientService.create(this.patientForm.value as any).subscribe({
-        next: () => this.router.navigate(['/patients']),
-        error: (err) => alert('Failed to create patient: ' + err.message)
+        next: () => this.router.navigate(['/patients'])
       });
     } else {
       this.patientForm.markAllAsTouched();

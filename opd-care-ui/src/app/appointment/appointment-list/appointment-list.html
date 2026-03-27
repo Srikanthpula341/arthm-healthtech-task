@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
   <h2 class="fw-bold text-dark mb-0">Appointments</h2>
-  <button class="btn btn-primary fw-bold shadow-sm rounded-pill px-4" routerLink="/appointments/new">
+  <button *ngIf="auth.role() !== 'DOCTOR'" class="btn btn-primary fw-bold shadow-sm rounded-pill px-4" routerLink="/appointments/new">
     <i class="bi bi-calendar-plus"></i> Book Appointment
   </button>
 </div>
@@ -47,7 +47,7 @@
               </span>
             </td>
             <td>
-              <button class="btn btn-sm btn-outline-success rounded-pill px-3 fw-semibold" routerLink="/consultations/new" [queryParams]="{appointmentId: a.appointmentId || a.id}" *ngIf="a.status === 'PENDING'">
+              <button class="btn btn-sm btn-outline-success rounded-pill px-3 fw-semibold" routerLink="/consultations/new" [queryParams]="{appointmentId: a.appointmentId || a.id}" *ngIf="a.status === 'PENDING' && auth.role() !== 'RECEPT'">
                 Consult
               </button>
             </td>

@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Appointment, AppointmentDto } from '../../services/appointment';
+import { Auth } from '../../services/auth';
 
 @Component({
   selector: 'app-appointment-list',
@@ -10,6 +11,7 @@ import { Appointment, AppointmentDto } from '../../services/appointment';
   styleUrl: './appointment-list.css',
 })
 export class AppointmentList implements OnInit {
+  public auth = inject(Auth);
   private appointmentService = inject(Appointment);
 
   appointments = signal<AppointmentDto[]>([]);

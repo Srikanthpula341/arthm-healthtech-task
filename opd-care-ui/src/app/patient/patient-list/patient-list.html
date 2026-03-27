@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
   <h2 class="fw-bold text-dark mb-0">Patients</h2>
-  <button class="btn btn-primary fw-bold shadow-sm rounded-pill px-4" routerLink="/patients/new">
+  <button *ngIf="auth.role() !== 'DOCTOR'" class="btn btn-primary fw-bold shadow-sm rounded-pill px-4" routerLink="/patients/new">
     <i class="bi bi-plus-lg"></i> Add Patient
   </button>
 </div>
@@ -33,7 +33,7 @@
             <td>{{ p.age }} yrs</td>
             <td>{{ p.phone }}</td>
             <td>
-              <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold" routerLink="/appointments/new" [queryParams]="{patientId: p.patientId || p.id}">Book Appt</button>
+              <button *ngIf="auth.role() !== 'DOCTOR'" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold" routerLink="/appointments/new" [queryParams]="{patientId: p.patientId || p.id}">Book Appt</button>
             </td>
           </tr>
           <tr *ngIf="patients.length === 0">
