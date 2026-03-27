@@ -24,21 +24,25 @@ export class Auth {
     return this.api.post<any>('/auth/login', credentials).pipe(
       tap((res) => {
         if (res && res.role) {
-          this.setLoggedIn(res.role);
+          this.setLoggedIn(res.role, res.userId);
         }
       })
     );
   }
 
-  public setLoggedIn(role: Role) {
+  public setLoggedIn(role: Role, userId?: string) {
     this.role.set(role);
     localStorage.setItem('opd_role', role as string);
+    if (userId) {
+      localStorage.setItem('opd_user_id', userId);
+    }
     this.router.navigate(['/dashboard']);
   }
 
   logout() {
     this.role.set(null);
     localStorage.removeItem('opd_role');
+    localStorage.removeItem('opd_user_id');
     this.router.navigate(['/login']);
   }
 

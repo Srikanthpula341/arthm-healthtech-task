@@ -1,3 +1,9 @@
+<div *ngIf="api.loading()" class="global-loader-overlay">
+  <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
 <app-navbar *ngIf="auth.isAuthenticated()"></app-navbar>
 <div [class.container-fluid]="auth.isAuthenticated()" [class.h-100]="!auth.isAuthenticated()" [class.mt-4]="auth.isAuthenticated()">
   <router-outlet></router-outlet>

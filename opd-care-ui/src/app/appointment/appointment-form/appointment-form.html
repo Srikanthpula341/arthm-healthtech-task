@@ -10,6 +10,17 @@
     <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
       
       <div class="mb-3">
+        <label class="form-label text-secondary fw-semibold">Doctor</label>
+        <select formControlName="doctorId" class="form-select bg-light">
+          <option value="" disabled selected>Select a doctor...</option>
+          <option *ngFor="let d of doctors" [value]="d.userId">{{ d.fullName }}</option>
+        </select>
+        <div *ngIf="appointmentForm.get('doctorId')?.touched && appointmentForm.get('doctorId')?.invalid" class="text-danger small mt-1 fw-semibold">
+          <i class="bi bi-exclamation-circle"></i> Doctor is required.
+        </div>
+      </div>
+
+      <div class="mb-3">
         <label class="form-label text-secondary fw-semibold">Patient</label>
         <select formControlName="patientId" class="form-select bg-light">
           <option value="" disabled selected>Select an existing patient...</option>

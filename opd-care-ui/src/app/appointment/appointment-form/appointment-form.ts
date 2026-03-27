@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { Appointment } from '../../services/appointment';
 import { Patient, PatientDto } from '../../services/patient';
+import { Api } from '../../services/api';
 
 @Component({
   selector: 'app-appointment-form',
@@ -15,14 +16,16 @@ export class AppointmentForm implements OnInit {
   private fb = inject(FormBuilder);
   private appointmentService = inject(Appointment);
   private patientService = inject(Patient);
+  private api = inject(Api);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
   patients: PatientDto[] = [];
+  doctors: any[] = [];
 
   appointmentForm = this.fb.group({
     patientId: ['', Validators.required],
-    doctorName: ['', [Validators.required, Validators.minLength(3)]],
+    doctorId: ['', Validators.required],
     appointmentDate: ['', Validators.required],
     appointmentTime: ['', Validators.required]
   });
@@ -30,6 +33,10 @@ export class AppointmentForm implements OnInit {
   ngOnInit() {
     this.patientService.getAll().subscribe({
       next: (data) => this.patients = data || [],
+      error: (err) => console.error(err)
+    });
+    this.api.get<any[]>('/users/role/DOCTOR').subscribe({
+      next: (data) => this.doctors = data || [],
       error: (err) => console.error(err)
     });
     this.route.queryParams.subscribe(params => {
@@ -60,7 +67,7 @@ export class AppointmentForm implements OnInit {
 
       const dto = {
         patientId: formValue.patientId as string,
-        doctorName: formValue.doctorName!,
+        doctorId: formValue.doctorId as string,
         appointmentDate: formValue.appointmentDate!,
         appointmentTime: formValue.appointmentTime!,
         status: 'PENDING' as const
