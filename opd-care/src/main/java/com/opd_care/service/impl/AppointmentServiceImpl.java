@@ -6,15 +6,14 @@ import com.opd_care.dto.AppointmentDTO;
 import com.opd_care.exception.ResourceNotFoundException;
 import com.opd_care.exception.ValidationException;
 import com.opd_care.model.Appointment;
-import com.opd_care.model.AppointmentStatus;
+import com.opd_care.exception.ValidationException;
+import com.opd_care.model.Appointment;
 import com.opd_care.model.Patient;
-import com.opd_care.model.UserRole;
 import com.opd_care.repository.AppointmentRepository;
 import com.opd_care.repository.PatientRepository;
 import com.opd_care.repository.UserRepository;
 import com.opd_care.service.AppointmentService;
 import com.opd_care.util.MappingUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,9 +30,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final PatientRepository patientRepository;
     private final UserRepository userRepository;
 
-    public AppointmentServiceImpl(AppointmentRepository appointmentRepository, 
-                                  PatientRepository patientRepository,
-                                  UserRepository userRepository) {
+    public AppointmentServiceImpl(AppointmentRepository appointmentRepository,
+            PatientRepository patientRepository,
+            UserRepository userRepository) {
         this.appointmentRepository = appointmentRepository;
         this.patientRepository = patientRepository;
         this.userRepository = userRepository;
@@ -42,7 +41,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public AppointmentDTO bookAppointment(AppointmentDTO dto) {
         Patient patient = patientRepository.findById(dto.getPatientId())
-                .orElseThrow(() -> new ResourceNotFoundException(ErrorConstants.PATIENT_NOT_FOUND + dto.getPatientId()));
+                .orElseThrow(
+                        () -> new ResourceNotFoundException(ErrorConstants.PATIENT_NOT_FOUND + dto.getPatientId()));
 
         com.opd_care.model.User doctor = userRepository.findById(dto.getDoctorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Doctor not found: " + dto.getDoctorId()));
@@ -53,7 +53,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         checkAvailability(patient, doctor, dto);
 
         Appointment appointment = MappingUtil.toAppointmentEntity(dto, patient, doctor);
-        appointment.setAppointmentId(AppConstants.APPOINTMENT_ID_PREFIX + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
+        appointment.setAppointmentId(
+                AppConstants.APPOINTMENT_ID_PREFIX + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
         appointment.setStatus(com.opd_care.model.AppointmentStatus.PENDING);
 
         Appointment saved = appointmentRepository.save(appointment);
@@ -71,22 +72,25 @@ public class AppointmentServiceImpl implements AppointmentService {
             throw new ValidationException(ErrorConstants.PAST_DATE_BOOKING);
         }
 
-        if (dto.getAppointmentTime().isBefore(LocalTime.of(AppConstants.START_HOUR, 0)) || 
-            dto.getAppointmentTime().isAfter(LocalTime.of(AppConstants.END_HOUR, 0))) {
+        if (dto.getAppointmentTime().isBefore(LocalTime.of(AppConstants.START_HOUR, 0)) ||
+                dto.getAppointmentTime().isAfter(LocalTime.of(AppConstants.END_HOUR, 0))) {
             throw new ValidationException(ErrorConstants.INVALID_TIME);
         }
 
         if (dto.getAppointmentTime().getMinute() != 0) {
-            throw new ValidationException("Appointments must be booked on the hour (e.g. 10:00). 1-hour slots enforced.");
+            throw new ValidationException(
+                    "Appointments must be booked on the hour (e.g. 10:00). 1-hour slots enforced.");
         }
     }
 
     private void checkAvailability(Patient patient, com.opd_care.model.User doctor, AppointmentDTO dto) {
-        if (appointmentRepository.existsByPatientAndAppointmentDateAndAppointmentTime(patient, dto.getAppointmentDate(), dto.getAppointmentTime())) {
+        if (appointmentRepository.existsByPatientAndAppointmentDateAndAppointmentTime(patient, dto.getAppointmentDate(),
+                dto.getAppointmentTime())) {
             throw new ValidationException(ErrorConstants.DOUBLE_BOOKING);
         }
 
-        if (appointmentRepository.existsByDoctorAndAppointmentDateAndAppointmentTime(doctor, dto.getAppointmentDate(), dto.getAppointmentTime())) {
+        if (appointmentRepository.existsByDoctorAndAppointmentDateAndAppointmentTime(doctor, dto.getAppointmentDate(),
+                dto.getAppointmentTime())) {
             throw new ValidationException(ErrorConstants.DOCTOR_DOUBLE_BOOKING);
         }
     }
@@ -108,7 +112,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public List<AppointmentDTO> searchAppointments(LocalDate from, LocalDate to) {
         if (from == null && to == null) {
-             return getAllAppointments();
+            return getAllAppointments();
         }
         if (from != null && to == null) {
             return appointmentRepository.findByAppointmentDate(from).stream()
