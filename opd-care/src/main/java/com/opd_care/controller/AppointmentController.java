@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class AppointmentController {
     private final AppointmentService appointmentService;
 
+
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<List<AppointmentDTO>>> searchAppointments(
             @RequestParam(required = false) LocalDate from,

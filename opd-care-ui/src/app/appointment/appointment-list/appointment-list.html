@@ -31,7 +31,7 @@
           <tr *ngFor="let a of appointments()">
             <td class="text-muted">#{{ a.appointmentId || a.id }}</td>
             <td class="fw-bold text-dark">{{ a.patient?.name || 'Patient #' + a.patientId }}</td>
-            <td>Dr. {{ a.doctorName }}</td>
+            <td> {{ a.doctorName }}</td>
             <td>
               <div class="fw-semibold"><i class="bi bi-calendar2 me-1"></i>{{ a.appointmentDate }}</div>
               <div class="small text-muted"><i class="bi bi-clock me-1"></i>{{ a.appointmentTime }}</div>

@@ -13,6 +13,7 @@ import java.util.List;
 public interface AppointmentRepository extends JpaRepository<Appointment, String> {
     List<Appointment> findByAppointmentDate(LocalDate date);
     List<Appointment> findByAppointmentDateBetween(LocalDate startDate, LocalDate endDate);
+    List<Appointment> findByPatientPatientId(String patientId);
     boolean existsByPatientAndAppointmentDateAndAppointmentTime(Patient patient, LocalDate date, LocalTime time);
     boolean existsByDoctorAndAppointmentDateAndAppointmentTime(com.opd_care.model.User doctor, LocalDate date, LocalTime time);
 }
